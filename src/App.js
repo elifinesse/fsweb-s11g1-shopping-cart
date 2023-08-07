@@ -19,12 +19,31 @@ function App() {
 
   const addItem = (item) => {
     // verilen itemi sepete ekleyin
-    const newCart = [...cart, item];
+    const existingBook = cart.find((book) => book.id === item.id);
+    let newCart;
+    if (existingBook) {
+      newCart = cart.map((book) =>
+        book.id === item.id ? { ...book, no: book.no + 1 } : book
+      );
+    } else {
+      newCart = [...cart, { ...item, no: 1 }];
+    }
     setCart(newCart);
     localStorage.setItem("cart", JSON.stringify(newCart));
   };
+  console.log(cart);
   const removeItem = (id) => {
-    const newCart = cart.filter((item) => id !== item.id);
+    const existingBook = cart.find((book) => book.id === id);
+    let newCart;
+    if (existingBook && existingBook.no === 1) {
+      newCart = cart.filter((item) => item.id !== id);
+    } else if (existingBook) {
+      newCart = cart.map((item) =>
+        item.id === id ? { ...item, no: item.no - 1 } : item
+      );
+    } else {
+      newCart = cart;
+    }
     setCart(newCart);
     localStorage.setItem("cart", JSON.stringify(newCart));
   };

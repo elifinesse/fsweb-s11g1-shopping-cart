@@ -10,7 +10,7 @@ const ShoppingCart = () => {
   const getCartTotal = () => {
     return cart
       .reduce((acc, value) => {
-        return acc + value.price;
+        return acc + value.no * value.price;
       }, 0)
       .toFixed(2);
   };
